@@ -1,23 +1,24 @@
+res = []
 class Solution:
+    def isPalindrome(self, s, start, end):
+        while start < end:
+            if s[start] != s[end]:
+                return False
+            start+=1
+            end-=1
+        return True
+    def helper(self, s,start,out,res):
+        if start == len(s):
+            res.append(out.copy())
+            return 
+        for i in range(start, len(s)):
+            if not self.isPalindrome(s,start,i):
+                continue
+            out.append(s[start:i + 1])
+            self.helper(s,i+1,out,res)
+            out.pop()
     def partition(self, s):
-        """
-        :type s: str
-        :rtype: List[List[str]]
-        """
-        def is_palindrome(s, l, r):
-            while l < r:
-                if s[l] != s[r]:
-                    return False
-                l += 1
-                r -= 1
-            return True
-            
-        ans = [[] for _ in range(len(s)+1)]
-        ans[0].append([])
-        for i in range(len(s)):
-            for start in range(i+1):
-                if is_palindrome(s, start, i):
-                    substr = s[start:i+1]
-                    for parts in ans[start]:
-                        ans[i+1].append(parts + [substr])
-        return ans[-1]
+        res = []
+        out = []
+        self.helper(s, 0, out, res)
+        return res
